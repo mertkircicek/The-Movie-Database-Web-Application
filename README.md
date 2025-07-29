@@ -1,12 +1,26 @@
-# React + Vite
+TMDb Clone
+A responsive web application that mimics The Movie Database (TMDb) interface, allowing users to browse popular movies and TV shows across different categories.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+//Features:
+Dynamic Banner: Displays a random popular movie backdrop as the main banner.
 
-Currently, two official plugins are available:
+Categorized Content Browsing: Explore popular content categorized into:
+Streaming: Popular movies.
+On TV: Popular TV shows.
+For Rent: Upcoming movies (as a proxy for rent/purchase availability).
+In Theaters: Movies currently playing in cinemas.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Responsive Design: Built with Tailwind CSS to ensure a seamless experience across various devices (mobile, tablet, desktop).
 
-## Expanding the ESLint configuration
+Movie/TV Card Display: Beautifully designed cards for each movie/TV show, showing its poster, title/name, and release/air date.
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+//API Integration: Fetches real-time data from The Movie Database (TMDb) API.
+
+//Search Input: A functional search bar 
+
+//Technologies Used:
+-React
+-Vite
+-Tailwind CSS
+-Axios
+-The Movie Database (TMDb) API

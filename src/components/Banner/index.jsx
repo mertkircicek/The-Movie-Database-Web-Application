@@ -43,14 +43,14 @@ const Banner = () => {
                         const fullImageUrl = `${IMAGE_BASE_URL}${backdropPath}`;
                         setBackgroundImageUrl(fullImageUrl);
                     } else {
-                        setError("Seçilen filmin arka plan resmi bulunamadı.");
+                        setError("Background image for selected movie not found");
                     }
                 } else {
-                    setError("Popüler film bulunamadı.");
+                    setError("No popular movies found.");
                 }
             } catch (err) {
-                console.error("Banner resmi çekilirken hata oluştu:", err);
-                setError("Arka plan resmi yüklenemedi.");
+                console.error("An error occurred while capturing the banner image:", err);
+                setError("The background image could not be loaded.");
             } finally {
                 setLoading(false);
             }
