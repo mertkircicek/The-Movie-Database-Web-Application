@@ -1,13 +1,11 @@
 import ProgressCircle from "../../baseUI/progress-circle";
 import Ellipsis from "../../baseUI/ellipsis";
 
-const getPosterURL = (posterPath) => {
-    
+const getPosterURL = (posterPath) => { 
     return `https://image.tmdb.org/t/p/w200${posterPath}`;
 }
 
 const MovieCard = ({ poster_path, name, title, release_date, vote_average, first_air_date }) => { 
-    
     const imageUrl = poster_path ? getPosterURL(poster_path) : 'https://via.placeholder.com/150x225?text=No+Image'; 
 
     return (
