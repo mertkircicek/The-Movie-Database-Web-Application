@@ -15,14 +15,14 @@ const PersonDetail = () => {
                 setLoading(true);
                 const response = await tmdb.get(`/person/${id}`, {
                     params: {
-                        language: 'tr-TR',
+                        language: 'en-US',
                         append_to_response: 'credits,images'
                     }
                 });
                 setPerson(response.data);
             } catch (err) {
-                console.error('Kişi detayları yüklenirken hata:', err);
-                setError('Kişi detayları yüklenemedi.');
+                console.error('Error loading person details:', err);
+                setError('Person details could not be loaded.');
             } finally {
                 setLoading(false);
             }
@@ -36,7 +36,7 @@ const PersonDetail = () => {
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-                <div className="text-white text-xl">Yükleniyor...</div>
+                <div className="text-white text-xl">Loading...</div>
             </div>
         );
     }
@@ -52,30 +52,27 @@ const PersonDetail = () => {
     if (!person) {
         return (
             <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-                <div className="text-white text-xl">Kişi bulunamadı.</div>
+                <div className="text-white text-xl">Person not found.</div>
             </div>
         );
     }
 
     return (
         <div className="min-h-screen bg-gray-900 text-white">
-            {/* Header */}
             <div className="bg-tmdbDarkBlue p-4">
                 <div className="max-w-7xl mx-auto flex items-center">
                     <button
                         onClick={() => navigate('/')}
                         className="mr-4 text-white hover:text-gray-300"
                     >
-                        ← Geri
+                        ←  Back
                     </button>
                     <h1 className="text-2xl font-bold">{person.name}</h1>
                 </div>
             </div>
 
-            {/* Person Content */}
             <div className="max-w-7xl mx-auto p-4">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Profile Image */}
                     <div className="lg:col-span-1">
                         {person.profile_path ? (
                             <img
@@ -85,19 +82,18 @@ const PersonDetail = () => {
                             />
                         ) : (
                             <div className="w-full h-96 bg-gray-700 rounded-lg flex items-center justify-center">
-                                <span className="text-gray-400">Fotoğraf Yok</span>
+                                <span className="text-gray-400">No Photo</span>
                             </div>
                         )}
                     </div>
 
-                    {/* Details */}
                     <div className="lg:col-span-2">
                         <h1 className="text-4xl font-bold mb-4">{person.name}</h1>
 
                         <div className="flex flex-wrap gap-4 mb-6">
                             {person.birthday && (
                                 <span className="bg-blue-600 px-3 py-1 rounded-full text-sm">
-                                    {new Date(person.birthday).toLocaleDateString('tr-TR')}
+                                    {new Date(person.birthday).toLocaleDateString('en-US')}
                                 </span>
                             )}
                             {person.place_of_birth && (
@@ -114,14 +110,14 @@ const PersonDetail = () => {
 
                         {person.biography && (
                             <div className="mb-6">
-                                <h3 className="text-lg font-semibold mb-2">Biyografi:</h3>
+                                <h3 className="text-lg font-semibold mb-2">Biography:</h3>
                                 <p className="text-gray-300 leading-relaxed">{person.biography}</p>
                             </div>
                         )}
 
                         {person.known_for_department && (
                             <div className="mb-6">
-                                <h3 className="text-lg font-semibold mb-2">Bilinen Alan:</h3>
+                                <h3 className="text-lg font-semibold mb-2">Known for:</h3>
                                 <span className="bg-gray-700 px-3 py-1 rounded-full text-sm">
                                     {person.known_for_department}
                                 </span>
@@ -130,7 +126,7 @@ const PersonDetail = () => {
 
                         {person.credits?.cast && person.credits.cast.length > 0 && (
                             <div className="mb-6">
-                                <h3 className="text-lg font-semibold mb-2">Oyuncu Olarak:</h3>
+                                <h3 className="text-lg font-semibold mb-2">As an Actor:</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {person.credits.cast.slice(0, 6).map(movie => (
                                         <div key={movie.id} className="bg-gray-800 p-3 rounded-lg">
@@ -161,7 +157,7 @@ const PersonDetail = () => {
 
                         {person.credits?.crew && person.credits.crew.length > 0 && (
                             <div className="mb-6">
-                                <h3 className="text-lg font-semibold mb-2">Ekip Olarak:</h3>
+                                <h3 className="text-lg font-semibold mb-2">As a Crew:</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     {person.credits.crew.slice(0, 6).map(movie => (
                                         <div key={movie.id} className="bg-gray-800 p-3 rounded-lg">

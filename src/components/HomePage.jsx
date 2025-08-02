@@ -1,5 +1,3 @@
-// src/components/HomePage.jsx
-
 import React, { useState } from 'react';
 import Header from './Header';
 import SearchBar from './SearchBar';
@@ -9,7 +7,7 @@ import Section from '../Layouts/Section';
 import MovieList from './Movies/MovieList';
 
 const HomePage = () => {
-    // Kategori state'i artık burada yönetiliyor.
+
     const [selectedCategory, setSelectedCategory] = useState("Streaming");
 
     const categories = ["Streaming", "On TV", "For Rent", "In Theaters"];

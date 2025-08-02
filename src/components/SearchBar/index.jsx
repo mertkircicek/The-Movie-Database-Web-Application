@@ -40,7 +40,6 @@ const SearchBar = () => {
                 break;
         }
         
-        // Arama sonuçlarını temizle
         setSearchResults([]);
         setShowResults(false);
         setSearchQuery('');
@@ -61,12 +60,12 @@ const SearchBar = () => {
                 item.media_type === 'movie' || 
                 item.media_type === 'tv' || 
                 item.media_type === 'person'
-            ).slice(0, 10); // İlk 10 sonucu al
+            ).slice(0, 10); 
             
             setSearchResults(results);
             setShowResults(true);
         } catch (error) {
-            console.error('Arama hatası:', error);
+            console.error('Search error:', error);
             setSearchResults([]);
         } finally {
             setIsSearching(false);
@@ -98,10 +97,10 @@ const SearchBar = () => {
 
     const getMediaTypeText = (mediaType) => {
         switch (mediaType) {
-            case 'movie': return 'Film';
-            case 'tv': return 'Dizi';
-            case 'person': return 'Kişi';
-            default: return 'Diğer';
+            case 'movie': return 'Movie';
+            case 'tv': return 'TV Show';
+            case 'person': return 'Person';
+            default: return 'Other';
         }
     };
 
@@ -142,7 +141,7 @@ const SearchBar = () => {
                 </div>
             </div>
 
-            {/* Arama Sonuçları */}
+            
             {showResults && (
                 <div className="absolute top-full left-4 right-4 bg-white border border-gray-200 rounded-lg shadow-lg z-50 max-h-96 overflow-y-auto">
                     {isSearching ? (
@@ -172,7 +171,7 @@ const SearchBar = () => {
                         </div>
                     ) : searchQuery.length >= 3 ? (
                         <div className="p-4 text-center text-gray-500">
-                            Sonuç bulunamadı
+                            No results found
                         </div>
                     ) : null}
                 </div>

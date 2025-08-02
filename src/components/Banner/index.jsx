@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import {useRef} from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom'; // useNavigate'ı import edin
 import Container from '../../Layouts/Container';
 import SearchInput from '../../baseUI/Input/SearchInput';
 import SearchButton from '../../baseUI/Button/SearchButton';
@@ -14,17 +14,23 @@ const Banner = () => {
     const [error, setError] = useState(null);
 
     const searchInputRef = useRef();
+    const navigate = useNavigate(); // useNavigate hook'unu kullanın
 
-    const handleKeyDown = (event ) => {
-        if(event.key=== 'Enter') {
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
             handleSearch();
         }
-
-    }
+    };
 
     const handleSearch = () => {
-        alert(`You typed ${searchInputRef.current.value}`);
-    }
+        const query = searchInputRef.current.value;
+        if (query.trim()) {
+            // alert() yerine arama sonuçları sayfasına yönlendirme yapın
+            navigate(`/search?query=${encodeURIComponent(query.trim())}`);
+            // Arama yapıldıktan sonra inputu temizlemek isteyebilirsiniz
+            searchInputRef.current.value = ''; 
+        }
+    };
 
     useEffect(() => {
         async function fetchBannerImage() {
@@ -92,16 +98,14 @@ const Banner = () => {
                     </h2>
 
                     <div className="relative mt-20 max-w-8xl">
-                        <SearchInput ref={searchInputRef} onKeyDown = {handleKeyDown}/>
-                        <div className = "absolute top-0 right-0">
+                        <SearchInput ref={searchInputRef} onKeyDown={handleKeyDown} />
+                        <div className="absolute top-0 right-0">
                             <SearchButton onClick={handleSearch} />
                         </div>
                     </div>
                 </div>
             </Container>
         </div>
-
-
     );
 };
 

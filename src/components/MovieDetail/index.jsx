@@ -15,14 +15,14 @@ const MovieDetail = () => {
                 setLoading(true);
                 const response = await tmdb.get(`/movie/${id}`, {
                     params: {
-                        language: 'tr-TR',
+                        language: 'en-US',
                         append_to_response: 'credits,videos,images'
                     }
                 });
                 setMovie(response.data);
             } catch (err) {
-                console.error('Film detayları yüklenirken hata:', err);
-                setError('Film detayları yüklenemedi.');
+                console.error('Error loading movie details:', err);
+                setError('Movie details could not be loaded.');
             } finally {
                 setLoading(false);
             }
@@ -36,7 +36,7 @@ const MovieDetail = () => {
     if (loading) {
         return (
             <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-                <div className="text-white text-xl">Yükleniyor...</div>
+                <div className="text-white text-xl">Loading...</div>
             </div>
         );
     }
@@ -52,7 +52,7 @@ const MovieDetail = () => {
     if (!movie) {
         return (
             <div className="min-h-screen bg-gray-900 flex items-center justify-center">
-                <div className="text-white text-xl">Film bulunamadı.</div>
+                <div className="text-white text-xl">Movie not found.</div>
             </div>
         );
     }
@@ -66,7 +66,7 @@ const MovieDetail = () => {
                         onClick={() => navigate('/')}
                         className="mr-4 text-white hover:text-gray-300"
                     >
-                        ← Geri
+                        ← Back
                     </button>
                     <h1 className="text-2xl font-bold">{movie.title}</h1>
                 </div>
@@ -85,7 +85,7 @@ const MovieDetail = () => {
                             />
                         ) : (
                             <div className="w-full h-96 bg-gray-700 rounded-lg flex items-center justify-center">
-                                <span className="text-gray-400">Poster Yok</span>
+                                <span className="text-gray-400">No posters</span>
                             </div>
                         )}
                     </div>
@@ -106,7 +106,7 @@ const MovieDetail = () => {
                             )}
                             {movie.runtime && (
                                 <span className="bg-green-600 px-3 py-1 rounded-full text-sm">
-                                    {Math.floor(movie.runtime / 60)}s {movie.runtime % 60}dk
+                                    {Math.floor(movie.runtime / 60)}h {movie.runtime % 60}sec
                                 </span>
                             )}
                             {movie.vote_average && (
@@ -118,7 +118,7 @@ const MovieDetail = () => {
 
                         {movie.genres && (
                             <div className="mb-6">
-                                <h3 className="text-lg font-semibold mb-2">Türler:</h3>
+                                <h3 className="text-lg font-semibold mb-2">Types:</h3>
                                 <div className="flex flex-wrap gap-2">
                                     {movie.genres.map(genre => (
                                         <span key={genre.id} className="bg-gray-700 px-3 py-1 rounded-full text-sm">
@@ -131,14 +131,14 @@ const MovieDetail = () => {
 
                         {movie.overview && (
                             <div className="mb-6">
-                                <h3 className="text-lg font-semibold mb-2">Özet:</h3>
+                                <h3 className="text-lg font-semibold mb-2">Summary:</h3>
                                 <p className="text-gray-300 leading-relaxed">{movie.overview}</p>
                             </div>
                         )}
 
                         {movie.credits?.cast && (
                             <div className="mb-6">
-                                <h3 className="text-lg font-semibold mb-2">Oyuncular:</h3>
+                                <h3 className="text-lg font-semibold mb-2">Cast:</h3>
                                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
                                     {movie.credits.cast.slice(0, 8).map(actor => (
                                         <div key={actor.id} className="text-center">
