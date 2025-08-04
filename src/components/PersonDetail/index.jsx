@@ -16,7 +16,7 @@ const PersonDetail = () => {
                 const response = await tmdb.get(`/person/${id}`, {
                     params: {
                         language: 'en-US',
-                        append_to_response: 'credits,images'
+                        append_to_response: 'combined_credits,images' 
                     }
                 });
                 setPerson(response.data);
@@ -63,17 +63,31 @@ const PersonDetail = () => {
                 <div className="max-w-7xl mx-auto flex items-center">
                     <button
                         onClick={() => navigate('/')}
-                        className="mr-4 text-white hover:text-gray-300"
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-full transition-colors duration-200"
                     >
-                        ←  Back
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                            />
+                        </svg>
+                        <span>Back</span>
                     </button>
-                    <h1 className="text-2xl font-bold">{person.name}</h1>
+                    <h1 className="text-2xl font-bold ml-4">{person.name}</h1>
                 </div>
             </div>
 
             <div className="max-w-7xl mx-auto p-4">
-                <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div className="lg:col-span-1">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <div className="md:col-span-1">
                         {person.profile_path ? (
                             <img
                                 src={`https://image.tmdb.org/t/p/w500${person.profile_path}`}
@@ -87,23 +101,28 @@ const PersonDetail = () => {
                         )}
                     </div>
 
-                    <div className="lg:col-span-2">
+                    <div className="md:col-span-2">
                         <h1 className="text-4xl font-bold mb-4">{person.name}</h1>
 
                         <div className="flex flex-wrap gap-4 mb-6">
                             {person.birthday && (
                                 <span className="bg-blue-600 px-3 py-1 rounded-full text-sm">
-                                    {new Date(person.birthday).toLocaleDateString('en-US')}
+                                    Birthday: {new Date(person.birthday).toLocaleDateString('en-US')}
                                 </span>
                             )}
                             {person.place_of_birth && (
                                 <span className="bg-green-600 px-3 py-1 rounded-full text-sm">
-                                    {person.place_of_birth}
+                                    Born in: {person.place_of_birth}
                                 </span>
                             )}
                             {person.popularity && (
                                 <span className="bg-yellow-600 px-3 py-1 rounded-full text-sm">
                                     ⭐ {person.popularity.toFixed(1)}
+                                </span>
+                            )}
+                            {person.known_for_department && (
+                                <span className="bg-purple-600 px-3 py-1 rounded-full text-sm">
+                                    Known for: {person.known_for_department}
                                 </span>
                             )}
                         </div>
@@ -114,82 +133,42 @@ const PersonDetail = () => {
                                 <p className="text-gray-300 leading-relaxed">{person.biography}</p>
                             </div>
                         )}
-
-                        {person.known_for_department && (
-                            <div className="mb-6">
-                                <h3 className="text-lg font-semibold mb-2">Known for:</h3>
-                                <span className="bg-gray-700 px-3 py-1 rounded-full text-sm">
-                                    {person.known_for_department}
-                                </span>
-                            </div>
-                        )}
-
-                        {person.credits?.cast && person.credits.cast.length > 0 && (
-                            <div className="mb-6">
-                                <h3 className="text-lg font-semibold mb-2">As an Actor:</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {person.credits.cast.slice(0, 6).map(movie => (
-                                        <div key={movie.id} className="bg-gray-800 p-3 rounded-lg">
-                                            <div className="flex items-center space-x-3">
-                                                {movie.poster_path ? (
-                                                    <img
-                                                        src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
-                                                        alt={movie.title || movie.name}
-                                                        className="w-12 h-18 rounded"
-                                                    />
-                                                ) : (
-                                                    <div className="w-12 h-18 bg-gray-700 rounded"></div>
-                                                )}
-                                                <div>
-                                                    <p className="font-medium text-sm">{movie.title || movie.name}</p>
-                                                    <p className="text-xs text-gray-400">{movie.character}</p>
-                                                    <p className="text-xs text-gray-500">
-                                                        {movie.release_date ? new Date(movie.release_date).getFullYear() : 
-                                                         movie.first_air_date ? new Date(movie.first_air_date).getFullYear() : ''}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
-
-                        {person.credits?.crew && person.credits.crew.length > 0 && (
-                            <div className="mb-6">
-                                <h3 className="text-lg font-semibold mb-2">As a Crew:</h3>
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                    {person.credits.crew.slice(0, 6).map(movie => (
-                                        <div key={movie.id} className="bg-gray-800 p-3 rounded-lg">
-                                            <div className="flex items-center space-x-3">
-                                                {movie.poster_path ? (
-                                                    <img
-                                                        src={`https://image.tmdb.org/t/p/w92${movie.poster_path}`}
-                                                        alt={movie.title || movie.name}
-                                                        className="w-12 h-18 rounded"
-                                                    />
-                                                ) : (
-                                                    <div className="w-12 h-18 bg-gray-700 rounded"></div>
-                                                )}
-                                                <div>
-                                                    <p className="font-medium text-sm">{movie.title || movie.name}</p>
-                                                    <p className="text-xs text-gray-400">{movie.job}</p>
-                                                    <p className="text-xs text-gray-500">
-                                                        {movie.release_date ? new Date(movie.release_date).getFullYear() : 
-                                                         movie.first_air_date ? new Date(movie.first_air_date).getFullYear() : ''}
-                                                    </p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-                        )}
                     </div>
                 </div>
+
+                {person.combined_credits?.cast?.length > 0 && (
+                    <div className="mt-8">
+                        <h2 className="text-2xl font-bold mb-4">Known for (Actor)</h2>
+                        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+                            {person.combined_credits.cast.slice(0, 8).map(item => (
+                                <div key={item.id} className="bg-gray-800 rounded-lg overflow-hidden shadow-lg">
+                                    {item.poster_path ? (
+                                        <img
+                                            src={`https://image.tmdb.org/t/p/w185${item.poster_path}`}
+                                            alt={item.title || item.name}
+                                            className="w-full h-auto object-cover"
+                                        />
+                                    ) : (
+                                        <div className="w-full h-64 bg-gray-700 flex items-center justify-center text-center">
+                                            <span className="text-gray-400 p-2">No Poster Available</span>
+                                        </div>
+                                    )}
+                                    <div className="p-3">
+                                        <h4 className="font-medium text-sm truncate">{item.title || item.name}</h4>
+                                        <p className="text-xs text-gray-400 truncate">as {item.character}</p>
+                                        <p className="text-xs text-gray-500">
+                                            {item.release_date ? new Date(item.release_date).getFullYear() :
+                                             item.first_air_date ? new Date(item.first_air_date).getFullYear() : ''}
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
+                )}
             </div>
         </div>
     );
 };
 
-export default PersonDetail; 
+export default PersonDetail;

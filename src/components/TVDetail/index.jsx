@@ -63,17 +63,42 @@ const TVDetail = () => {
                 <div className="max-w-7xl mx-auto flex items-center">
                     <button
                         onClick={() => navigate('/')}
-                        className="mr-4 text-white hover:text-gray-300"
+                        className="flex items-center gap-2 px-4 py-2 bg-gray-700 hover:bg-gray-600 text-white rounded-full transition-colors duration-200"
                     >
-                        ← Back
+                        <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                        >
+                            <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                strokeWidth={2}
+                                d="M10 19l-7-7m0 0l7-7m-7 7h18"
+                            />
+                        </svg>
+                        <span>Back</span>
                     </button>
-                    <h1 className="text-2xl font-bold">{tvShow.name}</h1>
+                    <h1 className="text-2xl font-bold ml-4">{tvShow.name}</h1>
                 </div>
             </div>
 
-            <div className="max-w-7xl mx-auto p-4">
+            {tvShow.backdrop_path && (
+                <div
+                    className="relative h-96 bg-cover bg-center"
+                    style={{ backgroundImage: `url(https://image.tmdb.org/t/p/original${tvShow.backdrop_path})` }}
+                >
+                    <div className="absolute inset-0 bg-black opacity-50"></div>
+                    <div className="absolute inset-0 flex items-center p-4 max-w-7xl mx-auto z-10">
+                        <h1 className="text-5xl font-bold text-white shadow-lg">{tvShow.name}</h1>
+                    </div>
+                </div>
+            )}
+            
+            <div className="-mt-16 relative max-w-7xl mx-auto p-4 z-20">
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    {/* Poster */}
                     <div className="lg:col-span-1">
                         {tvShow.poster_path ? (
                             <img
@@ -103,7 +128,7 @@ const TVDetail = () => {
                             )}
                             {tvShow.number_of_seasons && (
                                 <span className="bg-green-600 px-3 py-1 rounded-full text-sm">
-                                    {tvShow.number_of_seasons} Season
+                                    {tvShow.number_of_seasons} Season{tvShow.number_of_seasons > 1 ? 's' : ''}
                                 </span>
                             )}
                             {tvShow.vote_average && (
@@ -142,13 +167,13 @@ const TVDetail = () => {
                             <div className="mb-6">
                                 <h3 className="text-lg font-semibold mb-2">Cast:</h3>
                                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                                    {tvShow.credits.cast.map(actor => (
+                                    {tvShow.credits.cast.slice(0, 8).map(actor => (
                                         <div key={actor.id} className="text-center">
                                             {actor.profile_path ? (
                                                 <img
-                                                    src={`https://image.tmdb.org/t/p/w200${actor.profile_path}`}
+                                                    src={`https://image.tmdb.org/t/p/w185${actor.profile_path}`}
                                                     alt={actor.name}
-                                                    className="w-16 h-16 mx-auto bg-cover bg-center rounded-full mb-2 object-cover"
+                                                    className="w-16 h-16 mx-auto rounded-full object-cover"
                                                 />
                                             ) : (
                                                 <div className="w-16 h-16 mx-auto bg-gray-700 rounded-full mb-2 flex items-center justify-center">
@@ -162,7 +187,6 @@ const TVDetail = () => {
                                 </div>
                             </div>
                         )}
-
                         {tvShow.created_by && tvShow.created_by.length > 0 && (
                             <div className="mb-6">
                                 <h3 className="text-lg font-semibold mb-2">Creators:</h3>

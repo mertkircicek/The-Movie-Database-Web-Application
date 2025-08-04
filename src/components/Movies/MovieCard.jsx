@@ -1,7 +1,7 @@
 import React from 'react';
 import ProgressCircle from "../../baseUI/progress-circle";
 import Ellipsis from "../../baseUI/ellipsis";
-import { FaHeart, FaRegHeart } from 'react-icons/fa'; 
+import { FaStar, FaRegStar } from 'react-icons/fa'; 
 
 const MovieCard = ({ item, isFavorite, onToggleFavorite, onCardClick }) => { 
     const { poster_path, name, title, release_date, vote_average, first_air_date } = item;
@@ -21,7 +21,7 @@ const MovieCard = ({ item, isFavorite, onToggleFavorite, onCardClick }) => {
                 <img
                     src={imageUrl}
                     alt={name || title}
-                    className="w-[150px] h-[225px] shadow-sm rounded-md"
+                    className="w-[200px] h-[300px] shadow-sm rounded-md"
                 />
                 <div className="absolute bottom-[-1.2rem] left-2">
                     <ProgressCircle percent={vote_average * 10}/>
@@ -37,11 +37,11 @@ const MovieCard = ({ item, isFavorite, onToggleFavorite, onCardClick }) => {
                         onToggleFavorite(item);
                     }}
                 >
-                    {isFavorite ? <FaHeart size={20} /> : <FaRegHeart size={20} />}
+                    {isFavorite ? <FaStar size={20} /> : <FaRegStar size={20} />}
                 </div>
             </div>
             
-            <div className="flex flex-col px-3 pt-5 w-[150px]">
+            <div className="flex flex-col px-3 pt-5 w-[200px]">
                 <h1 className="font-bold hover:cursor-pointer hover:text-tmdbLightBlue">{name || title}</h1>
                 <p className="font-normal text-slate-500">{first_air_date || release_date}</p> 
             </div>

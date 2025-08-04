@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import tmdb from '../../api/tmdb';
 import { FaFilm, FaTv, FaUser, FaSearch } from 'react-icons/fa';
 
-const SearchBar = () => {
+const SearchBar = ({ onSubmit, onClose, isDismissible = false }) => { 
     const searchInputRef = useRef();
     const navigate = useNavigate();
     const [searchResults, setSearchResults] = useState([]);
@@ -13,24 +13,33 @@ const SearchBar = () => {
     const containerRef = useRef(null);
 
     useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (containerRef.current && !containerRef.current.contains(event.target)) {
-                setShowResults(false);
-                setSearchResults([]);
-                setSearchQuery('');
-            }
-        };
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+        if (isDismissible) {
+            const handleClickOutside = (event) => {
+                if (containerRef.current && !containerRef.current.contains(event.target)) {
+                    setShowResults(false);
+                    setSearchResults([]);
+                    setSearchQuery('');
+                    if (onClose) { 
+                        onClose();
+                    }
+                }
+            };
+            document.addEventListener("mousedown", handleClickOutside);
+            return () => {
+                document.removeEventListener("mousedown", handleClickOutside);
+            };
+        }
+    }, [isDismissible, onClose]); 
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
             const query = searchQuery.trim();
             if (query) {
-                navigate(`/search?query=${encodeURIComponent(query)}`);
+                if (onSubmit) { 
+                    onSubmit(query);
+                } else {
+                    navigate(`/search?query=${encodeURIComponent(query)}`);
+                }
                 setSearchResults([]);
                 setShowResults(false);
                 setSearchQuery('');
@@ -44,13 +53,23 @@ const SearchBar = () => {
         setSearchResults([]);
         setShowResults(false);
         setSearchQuery('');
+        if (isDismissible && onClose) { 
+            onClose();
+        }
     };
 
     const handleSearchClick = (query) => {
-        navigate(`/search?query=${encodeURIComponent(query)}`);
+        if (onSubmit) {
+            onSubmit(query);
+        } else {
+            navigate(`/search?query=${encodeURIComponent(query)}`);
+        }
         setSearchResults([]);
         setShowResults(false);
         setSearchQuery('');
+        if (isDismissible && onClose) { 
+            onClose();
+        }
     };
 
     const searchMulti = async (query) => {
@@ -134,21 +153,21 @@ const SearchBar = () => {
     };
 
     return (
-        <div className="relative w-full px-4 py-4" ref={containerRef}>
+        <div className="relative w-full px-4" ref={containerRef}> 
             <div className="relative">
                 <input
                     ref={searchInputRef}
                     type="text"
                     value={searchQuery}
                     onChange={handleInputChange}
-                    className="w-full h-12 pl-12 pr-4 text-lg text-gray-900 placeholder-gray-500 focus:outline-none"
+                    className="w-full h-[4rem] rounded-[8rem] pl-12 pr-4 text-lg text-gray-900 placeholder-gray-500 focus:outline-none"
                     placeholder="Search for a movie, tv show, or person"
                     onFocus={() => { if(searchResults.length > 0) setShowResults(true); }}
                     onKeyDown={handleKeyDown}
                 />
                 <div className="absolute left-4 top-1/2 transform -translate-y-1/2">
                     <svg
-                        className="w-5 h-5 text-gray-700"
+                        className="w-5 h-5 text-black"
                         fill="none"
                         stroke="currentColor"
                         viewBox="0 0 24 24"
@@ -157,7 +176,7 @@ const SearchBar = () => {
                         <path
                             strokeLinecap="round"
                             strokeLinejoin="round"
-                            strokeWidth={2}
+                            strokeWidth={3}
                             d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
                         />
                     </svg>
@@ -172,7 +191,7 @@ const SearchBar = () => {
                         </div>
                     ) : searchResults.length > 0 ? (
                         <div>
-                            {searchResults.slice(0, 3).map((item, index) => (
+                            {searchResults.slice(0, 3).map((item) => (
                                 <div 
                                     key={`${item.media_type}-${item.id}`}
                                     className="p-3 hover:bg-gray-100 cursor-pointer border-b border-gray-100 last:border-b-0"

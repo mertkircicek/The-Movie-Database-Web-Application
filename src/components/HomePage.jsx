@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import Header from './Header';
-import SearchBar from './SearchBar';
+import SearchBar from './SearchBar'; // SearchBar'ı import ediyoruz
 import Banner from './Banner';
 import Container from '../Layouts/Container';
 import Section from '../Layouts/Section'; 
 import MovieList from './Movies/MovieList';
+import { useNavigate } from 'react-router-dom';
 
 const HomePage = () => {
-
     const [selectedCategory, setSelectedCategory] = useState("Streaming");
+    const navigate = useNavigate();
 
     const categories = ["Streaming", "On TV", "For Rent", "In Theaters"];
 
@@ -16,10 +16,16 @@ const HomePage = () => {
         setSelectedCategory(selectedValue);
     };
 
+    const handleHomePageSearchSubmit = (query) => {
+        if (query.trim()) {
+            navigate(`/search?query=${encodeURIComponent(query.trim())}`);
+        }
+    };
+
     return (
         <>
-            <Header />
-            <SearchBar />
+            <SearchBar onSubmit={handleHomePageSearchSubmit} /> 
+
             <Container>
                 <Banner />
                 <Section

@@ -47,7 +47,7 @@ export const navItemsRight = [
         path: '/join'
     },
     {
-        name: 'heart', 
+        name: 'star', 
         type: 'icon',
         path: '/favorites' 
     },
