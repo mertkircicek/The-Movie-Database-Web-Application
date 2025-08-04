@@ -6,27 +6,31 @@ export const navItemsLeft = [
     },
     {
         name: 'Movies',
-        type: 'text'
+        type: 'link', 
+        path: '/movies' 
     },
     {
         name: 'TV Shows',
-        type: 'text'
+        type: 'link',
+        path: '/tv-shows'
     },
     {
         name: 'People',
-        type: 'text'
+        type: 'link',
+        path: '/people'
     },
     {
         name: 'More',
-        type: 'text'
+        type: 'link',
+        path: '/more'
     }
-
-]
+];
 
 export const navItemsRight = [
     {
         name: 'plus',
-        type: 'icon'
+        type: 'icon',
+        path: '/add' 
     },
     {
         name: 'EN',
@@ -34,16 +38,22 @@ export const navItemsRight = [
     },
     {
         name: 'Login',
-        type: 'text'
+        type: 'link',
+        path: '/login'
     },
     {
         name: 'Join TMDB',
-        type: 'text'
+        type: 'link',
+        path: '/join'
+    },
+    {
+        name: 'heart', 
+        type: 'icon',
+        path: '/favorites' 
     },
     {
         name: 'search',
-        type: 'icon'
+        type: 'icon',
+        path: '/search-all' 
     }
-
-
-]
+];

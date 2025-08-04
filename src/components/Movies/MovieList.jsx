@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 import tmdb from '../../api/tmdb'; 
 import MovieCard from './MovieCard';
 import { request } from '../../api/request';
@@ -9,11 +10,11 @@ import { useFavorites } from '../../context/FavoritesContext';
 const MovieList = ({ fetch }) => {
     const [movies, setMovies] = useState([]);
     const { toggleFavorite, isFavorite } = useFavorites(); 
+    const navigate = useNavigate(); 
 
     useEffect(() => {
         const fetchMovies = async () => {
             try {
-                
                 const apiUrlPath = request[fetch];
                 
                 if (!apiUrlPath) {
@@ -25,7 +26,11 @@ const MovieList = ({ fetch }) => {
                 const { data } = await tmdb.get(apiUrlPath);
                 
                 if (data && Array.isArray(data.results)) {
-                    setMovies(data.results);
+                    const moviesWithMediaType = data.results.map(item => ({
+                        ...item,
+                        media_type: apiUrlPath.includes('/movie/') ? 'movie' : 'tv'
+                    }));
+                    setMovies(moviesWithMediaType);
                 } else {
                     console.warn(`The 'results' field from the API is not an array or is empty:`, data);
                     setMovies([]);
@@ -38,6 +43,11 @@ const MovieList = ({ fetch }) => {
         fetchMovies();
     }, [fetch]); 
 
+    const handleCardClick = (item) => {
+        const { media_type, id } = item;
+        navigate(`/${media_type}/${id}`);
+    };
+
     return (
         <div className="flex pb-5 pl-5 pr-9 overflow-x-auto">
             {movies.length > 0 ? (
@@ -45,9 +55,10 @@ const MovieList = ({ fetch }) => {
                     return (
                         <MovieCard
                             key={movie.id}
-                            {...movie}
+                            item={movie}
                             isFavorite={isFavorite(movie.id)} 
-                            onToggleFavorite={() => toggleFavorite(movie)} 
+                            onToggleFavorite={toggleFavorite}
+                            onCardClick={() => handleCardClick(movie)} 
                         />
                     );
                 })

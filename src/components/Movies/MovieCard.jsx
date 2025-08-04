@@ -1,17 +1,22 @@
 import React from 'react';
 import ProgressCircle from "../../baseUI/progress-circle";
 import Ellipsis from "../../baseUI/ellipsis";
-import { FaStar, FaRegStar } from 'react-icons/fa'; 
+import { FaHeart, FaRegHeart } from 'react-icons/fa'; 
 
-const getPosterURL = (posterPath) => { 
-    return `https://image.tmdb.org/t/p/w200${posterPath}`;
-};
+const MovieCard = ({ item, isFavorite, onToggleFavorite, onCardClick }) => { 
+    const { poster_path, name, title, release_date, vote_average, first_air_date } = item;
+    
+    const getPosterURL = (posterPath) => { 
+        return `https://image.tmdb.org/t/p/w200${posterPath}`;
+    };
 
-const MovieCard = ({ poster_path, name, title, release_date, vote_average, first_air_date, isFavorite, onToggleFavorite, id }) => { 
     const imageUrl = poster_path ? getPosterURL(poster_path) : 'https://via.placeholder.com/150x225?text=No+Image'; 
 
     return (
-        <div className="flex flex-col pl-5 gap-2 relative">
+        <div 
+            className="flex flex-col pl-5 gap-2 relative cursor-pointer"
+            onClick={() => onCardClick(item)} 
+        >
             <div className="relative">
                 <img
                     src={imageUrl}
@@ -26,10 +31,13 @@ const MovieCard = ({ poster_path, name, title, release_date, vote_average, first
                 </div>
                 
                 <div 
-                    className="absolute top-3 left-3 cursor-pointer text-yellow-400" 
-                    onClick={() => onToggleFavorite(id)} 
+                    className="absolute top-3 left-3 cursor-pointer text-red-500" 
+                    onClick={(e) => {
+                        e.stopPropagation(); 
+                        onToggleFavorite(item);
+                    }}
                 >
-                    {isFavorite ? <FaStar size={20} /> : <FaRegStar size={20} />}
+                    {isFavorite ? <FaHeart size={20} /> : <FaRegHeart size={20} />}
                 </div>
             </div>
             
