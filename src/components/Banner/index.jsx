@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom'; // useNavigate'ı import edin
+import { useNavigate } from 'react-router-dom'; 
 import Container from '../../Layouts/Container';
 import SearchInput from '../../baseUI/Input/SearchInput';
 import SearchButton from '../../baseUI/Button/SearchButton';
@@ -14,7 +14,7 @@ const Banner = () => {
     const [error, setError] = useState(null);
 
     const searchInputRef = useRef();
-    const navigate = useNavigate(); // useNavigate hook'unu kullanın
+    const navigate = useNavigate(); 
 
     const handleKeyDown = (event) => {
         if (event.key === 'Enter') {
@@ -25,9 +25,7 @@ const Banner = () => {
     const handleSearch = () => {
         const query = searchInputRef.current.value;
         if (query.trim()) {
-            // alert() yerine arama sonuçları sayfasına yönlendirme yapın
             navigate(`/search?query=${encodeURIComponent(query.trim())}`);
-            // Arama yapıldıktan sonra inputu temizlemek isteyebilirsiniz
             searchInputRef.current.value = ''; 
         }
     };
